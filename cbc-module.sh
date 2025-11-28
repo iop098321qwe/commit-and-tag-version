@@ -22,7 +22,7 @@ function verg() {
         local latest_tag
         latest_tag=$(git describe --tags --abbrev=0)
 
-        if gh release create "$latest_tag" --notes-files CHANGELOG.md -d; then
+        if gh release create "$latest_tag" --notes-file CHANGELOG.md -d; then
           gh release edit "$latest_tag" --web
         fi
       fi
