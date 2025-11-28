@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
+
 ################################################################################
 # COMMIT-AND-TAG-VERSION
 ################################################################################
+
 alias ver='npx commit-and-tag-version'
 
-verg() {
+function verg() {
   echo "Previewing next version (no changes made):"
   if ! npx commit-and-tag-version --dry-run --skip.commit --skip.tag; then
     return 1
@@ -20,7 +22,7 @@ verg() {
         local latest_tag
         latest_tag=$(git describe --tags --abbrev=0)
 
-        if gh release create "$latest_tag" --generate-notes --draft; then
+        if gh release create "$latest_tag" --notes-files CHANGELOG.md -d; then
           gh release edit "$latest_tag" --web
         fi
       fi
