@@ -5,7 +5,7 @@
 ################################################################################
 
 alias ver='npx commit-and-tag-version'
-alias ver='npx commit-and-tag-version --release-as'
+alias veras='npx commit-and-tag-version --release-as'
 
 function verg() {
   echo "Previewing next version (no changes made):"
