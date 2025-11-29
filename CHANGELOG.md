@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.4](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.3...v0.0.4) (2025-11-29)
+
+
+### Features
+
+* add veras alias ([e356f5e](https://github.com/iop098321qwe/commit-and-tag-version/commit/e356f5efcffca7e7966e339aa0a3107457b4fc26))
+
 ## [0.0.3](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.2...v0.0.3) (2025-11-28)
 
 
