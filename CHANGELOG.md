@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.5](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.4...v0.0.5) (2025-11-29)
+
+
+### Bug Fixes
+
+* **alias:** fix name for `veras` from `ver` ([0f81b83](https://github.com/iop098321qwe/commit-and-tag-version/commit/0f81b835ab7472f2d9c0749b65adc1ccf68308ca))
+
 ## [0.0.4](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.3...v0.0.4) (2025-11-29)
 
 
