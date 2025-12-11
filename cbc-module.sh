@@ -8,7 +8,12 @@ alias ver='npx commit-and-tag-version'
 alias veras='npx commit-and-tag-version --release-as'
 
 function verg() {
-  echo "Previewing next version (no changes made):"
+  gum style \
+    --border rounded \
+    --border-foreground "#b4befe" \
+    --margin "1 0" \
+    --padding "0 2" \
+    "PREVIEWING NEXT VERSION"
   if ! npx commit-and-tag-version --dry-run --skip.commit --skip.tag; then
     return 1
   fi
