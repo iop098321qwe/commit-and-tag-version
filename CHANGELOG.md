@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.6](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.5...v0.0.6) (2025-12-11)
+
+
+### Bug Fixes
+
+* **function:** make output of `verg` more readable ([9fba5c9](https://github.com/iop098321qwe/commit-and-tag-version/commit/9fba5c9de31466797c2491f20a0c09fe73f351da))
+
 ## [0.0.5](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.4...v0.0.5) (2025-11-29)
 
 
