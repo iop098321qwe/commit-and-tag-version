@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.7](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.6...v0.0.7) (2026-01-15)
+
+
+### Features
+
+* **function:** allow passing arguments to commit-and-tag-version ([1bb957b](https://github.com/iop098321qwe/commit-and-tag-version/commit/1bb957b8b53033191236b8bd952b24d1ad22f1f2))
+
 ## [0.0.6](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.5...v0.0.6) (2025-12-11)
 
 
