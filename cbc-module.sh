@@ -14,7 +14,7 @@ function verg() {
     --margin "1 0" \
     --padding "0 2" \
     "PREVIEWING NEXT VERSION"
-  if ! npx commit-and-tag-version --dry-run --skip.commit --skip.tag; then
+  if ! npx commit-and-tag-version "$@" --dry-run --skip.commit --skip.tag; then
     return 1
   fi
 
@@ -22,7 +22,7 @@ function verg() {
     return 0
   fi
 
-  if npx commit-and-tag-version; then
+  if npx commit-and-tag-version "$@"; then
     if gum confirm "Push commits and tags?"; then
       if git push && git push --tags; then
         local latest_tag
