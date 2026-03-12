@@ -55,6 +55,7 @@ function verg() {
         fi
 
         if gh release create "$latest_tag" --notes-file "$notes_file" -d; then
+          sleep 2
           gh browse -r
         fi
 
