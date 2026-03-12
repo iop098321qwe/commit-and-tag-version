@@ -28,9 +28,37 @@ function verg() {
         local latest_tag
         latest_tag=$(git describe --tags --abbrev=0)
 
-        if gh release create "$latest_tag" --notes-file CHANGELOG.md -d; then
+        local changelog_file
+        local notes_file
+        changelog_file="CHANGELOG.md"
+
+        if [[ ! -f "$changelog_file" ]]; then
+          printf "%s not found; skipping release draft.\n" "$changelog_file" >&2
+          return 0
+        fi
+
+        notes_file=$(mktemp)
+        awk '
+          BEGIN { capture=0 }
+          /^## / {
+            if (capture) { exit }
+            if ($0 ~ /^## \[Unreleased\]/) { next }
+            capture=1
+          }
+          capture { print }
+        ' "$changelog_file" > "$notes_file"
+
+        if [[ ! -s "$notes_file" ]]; then
+          printf "No release notes found in %s; skipping release draft.\n" "$changelog_file" >&2
+          rm -f "$notes_file"
+          return 0
+        fi
+
+        if gh release create "$latest_tag" --notes-file "$notes_file" -d; then
           gh browse -r
         fi
+
+        rm -f "$notes_file"
       fi
     fi
   fi
