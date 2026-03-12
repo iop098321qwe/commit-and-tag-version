@@ -38,15 +38,27 @@ function verg() {
         fi
 
         notes_file=$(mktemp)
-        awk '
-          BEGIN { capture=0 }
+        if ! awk '
+          BEGIN { found_release=0 }
           /^## / {
-            if (capture) { exit }
-            if ($0 ~ /^## \[Unreleased\]/) { next }
-            capture=1
+            if (!found_release) {
+              if ($0 ~ /^## \[Unreleased\]/) {
+                print
+                next
+              }
+              found_release=1
+              print
+              next
+            }
+            exit
           }
-          capture { print }
-        ' "$changelog_file" > "$notes_file"
+          { print }
+          END { if (!found_release) exit 1 }
+        ' "$changelog_file" > "$notes_file"; then
+          printf "No release section found in %s; skipping release draft.\n" "$changelog_file" >&2
+          rm -f "$notes_file"
+          return 0
+        fi
 
         if [[ ! -s "$notes_file" ]]; then
           printf "No release notes found in %s; skipping release draft.\n" "$changelog_file" >&2
