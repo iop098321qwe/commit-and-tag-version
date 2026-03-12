@@ -66,9 +66,10 @@ function verg() {
           return 0
         fi
 
-        if gh release create "$latest_tag" --notes-file "$notes_file" -d; then
+        if gum spin --spinner dot --title "Creating GitHub release draft..." -- \
+          gh release create "$latest_tag" --notes-file "$notes_file" -d; then
           gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 2
-          gh browse -r
+          gum spin --spinner dot --title "Opening GitHub release draft..." -- gh browse -r
         fi
 
         rm -f "$notes_file"
