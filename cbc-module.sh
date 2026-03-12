@@ -24,12 +24,56 @@ function verg() {
 
   if npx commit-and-tag-version "$@"; then
     if gum confirm "Push commits and tags?"; then
-      if git push && git push --tags; then
-        local latest_tag
-        latest_tag=$(git describe --tags --abbrev=0)
+      if gum spin --spinner dot --title "Pushing commits..." --show-error -- git push; then
+        if gum spin --spinner dot --title "Pushing tags..." --show-error -- git push --tags; then
+          local latest_tag
+          latest_tag=$(git describe --tags --abbrev=0)
 
-        if gh release create "$latest_tag" --notes-file CHANGELOG.md -d; then
-          gh browse -r
+          local changelog_file
+          local notes_file
+          changelog_file="CHANGELOG.md"
+
+        if [[ ! -f "$changelog_file" ]]; then
+          printf "%s not found; skipping release draft.\n" "$changelog_file" >&2
+          return 0
+        fi
+
+        notes_file=$(mktemp)
+        if ! awk '
+          BEGIN { found_release=0 }
+          /^## / {
+            if (!found_release) {
+              if ($0 ~ /^## \[Unreleased\]/) {
+                print
+                next
+              }
+              found_release=1
+              print
+              next
+            }
+            exit
+          }
+          { print }
+          END { if (!found_release) exit 1 }
+        ' "$changelog_file" > "$notes_file"; then
+          printf "No release section found in %s; skipping release draft.\n" "$changelog_file" >&2
+          rm -f "$notes_file"
+          return 0
+        fi
+
+        if [[ ! -s "$notes_file" ]]; then
+          printf "No release notes found in %s; skipping release draft.\n" "$changelog_file" >&2
+          rm -f "$notes_file"
+          return 0
+        fi
+
+        if gum spin --spinner dot --title "Creating GitHub release draft..." -- \
+          gh release create "$latest_tag" --notes-file "$notes_file" -d; then
+          gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 2
+          gum spin --spinner dot --title "Opening GitHub release draft..." -- gh browse -r
+        fi
+
+          rm -f "$notes_file"
         fi
       fi
     fi
