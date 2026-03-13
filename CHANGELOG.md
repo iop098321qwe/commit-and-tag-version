@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.8](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.7...v0.0.8) (2026-03-13)
+
+
+### Features
+
+* **verg:** add spinners for gh steps ([0ff59ab](https://github.com/iop098321qwe/commit-and-tag-version/commit/0ff59abed83a78078f1ca9c2e624ec44058094fe))
+* **verg:** add spinners for git pushes ([1c07472](https://github.com/iop098321qwe/commit-and-tag-version/commit/1c074721dfd284d00d97af06c686ea25cbb24bb2))
+* **verg:** delay opening release draft ([eb683db](https://github.com/iop098321qwe/commit-and-tag-version/commit/eb683db1344e8b5ac5f027bc6e088ed95a866daa))
+* **verg:** show spinner before opening draft ([c67c315](https://github.com/iop098321qwe/commit-and-tag-version/commit/c67c31530c47f805950babf0aaf9075f0119793f))
+* **verg:** use latest changelog section for draft ([979e29f](https://github.com/iop098321qwe/commit-and-tag-version/commit/979e29fb95c95d0d3b07c97413a79439b7ece634))
+
+
+### Bug Fixes
+
+* **verg:** keep changelog preamble in draft notes ([31ff64e](https://github.com/iop098321qwe/commit-and-tag-version/commit/31ff64ea069af73339a5788b1a3a346399a2246e))
+
 ## [0.0.7](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.6...v0.0.7) (2026-01-15)
 
 
