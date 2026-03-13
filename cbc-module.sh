@@ -14,7 +14,28 @@ function verg() {
     --margin "1 0" \
     --padding "0 2" \
     "PREVIEWING NEXT VERSION"
-  if ! npx commit-and-tag-version "$@" --dry-run --skip.commit --skip.tag; then
+
+  local args
+  args=("$@")
+
+  local release_override=0
+  local arg
+  for arg in "${args[@]}"; do
+    case "$arg" in
+      --release-as|--release-as=*|-r)
+        release_override=1
+        break
+        ;;
+    esac
+  done
+
+  if [[ "$release_override" -eq 0 ]]; then
+    if ! git describe --tags --abbrev=0 >/dev/null 2>&1; then
+      args+=(--release-as 0.0.1)
+    fi
+  fi
+
+  if ! npx commit-and-tag-version "${args[@]}" --dry-run --skip.commit --skip.tag; then
     return 1
   fi
 
@@ -22,7 +43,7 @@ function verg() {
     return 0
   fi
 
-  if npx commit-and-tag-version "$@"; then
+  if npx commit-and-tag-version "${args[@]}"; then
     if gum confirm "Push commits and tags?"; then
       if gum spin --spinner dot --title "Pushing commits..." --show-error -- git push; then
         if gum spin --spinner dot --title "Pushing tags..." --show-error -- git push --tags; then
