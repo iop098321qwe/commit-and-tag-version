@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.10](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.9...v0.0.10) (2026-03-18)
+
+
+### Features
+
+* **verg:** streamline release confirmation ([c05c847](https://github.com/iop098321qwe/commit-and-tag-version/commit/c05c84746adc21e509c4e0b5b61595c5ce4b8346))
+
 ## [0.0.9](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.8...v0.0.9) (2026-03-13)
 
 
