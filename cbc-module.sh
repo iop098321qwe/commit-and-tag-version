@@ -39,20 +39,19 @@ function verg() {
     return 1
   fi
 
-  if ! gum confirm "Proceed with commit-and-tag-version?"; then
+  if ! gum confirm "Proceed with commit-and-tag-version, push commits/tags, and draft release?"; then
     return 0
   fi
 
   if npx commit-and-tag-version "${args[@]}"; then
-    if gum confirm "Push commits and tags?"; then
-      if gum spin --spinner dot --title "Pushing commits..." --show-error -- git push; then
-        if gum spin --spinner dot --title "Pushing tags..." --show-error -- git push --tags; then
-          local latest_tag
-          latest_tag=$(git describe --tags --abbrev=0)
+    if gum spin --spinner dot --title "Pushing commits..." --show-error -- git push; then
+      if gum spin --spinner dot --title "Pushing tags..." --show-error -- git push --tags; then
+        local latest_tag
+        latest_tag=$(git describe --tags --abbrev=0)
 
-          local changelog_file
-          local notes_file
-          changelog_file="CHANGELOG.md"
+        local changelog_file
+        local notes_file
+        changelog_file="CHANGELOG.md"
 
         if [[ ! -f "$changelog_file" ]]; then
           printf "%s not found; skipping release draft.\n" "$changelog_file" >&2
@@ -94,8 +93,7 @@ function verg() {
           gum spin --spinner dot --title "Opening GitHub release draft..." -- gh browse -r
         fi
 
-          rm -f "$notes_file"
-        fi
+        rm -f "$notes_file"
       fi
     fi
   fi
