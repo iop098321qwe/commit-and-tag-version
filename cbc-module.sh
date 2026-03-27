@@ -8,6 +8,19 @@ alias ver='npx commit-and-tag-version'
 alias veras='npx commit-and-tag-version --release-as'
 
 function verg() {
+  local repo_root
+  repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+    printf "verg must be run from a git repository root.\n" >&2
+    return 1
+  }
+
+  local cwd
+  cwd=$(pwd -P)
+  if [[ "$cwd" != "$repo_root" ]]; then
+    printf "verg must be run from repository root: %s\n" "$repo_root" >&2
+    return 1
+  fi
+
   gum style \
     --border rounded \
     --border-foreground "#b4befe" \
