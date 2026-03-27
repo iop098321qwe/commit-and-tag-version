@@ -5,7 +5,7 @@ Includes preview and guided release flow with an optional GitHub draft.
 
 ## Functions
 - `verg`: Preview next version, run release, push commits and tags, and draft
-  a GitHub release.
+  a GitHub release. Run only from the repository root.
 
 ## Aliases
 - `ver`: Run `npx commit-and-tag-version`.
