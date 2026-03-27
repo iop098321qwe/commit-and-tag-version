@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.12](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.11...v0.0.12) (2026-03-27)
+
+
+### Features
+
+* **verg:** prompt to switch to repo root ([3b63fec](https://github.com/iop098321qwe/commit-and-tag-version/commit/3b63fecc537e2a53fb4c4c11df7e0d22f290d63d))
+
 ## [0.0.11](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.10...v0.0.11) (2026-03-27)
 
 
