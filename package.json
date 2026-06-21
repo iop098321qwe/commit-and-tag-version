@@ -1,0 +1,26 @@
+{
+  "name": "commit-and-tag-version",
+  "version": "0.0.13",
+  "description": "Convenience wrappers for `commit-and-tag-version` release automation. Includes preview and guided release flow with an optional GitHub draft.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iop098321qwe/commit-and-tag-version.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/iop098321qwe/commit-and-tag-version/issues"
+  },
+  "homepage": "https://github.com/iop098321qwe/commit-and-tag-version#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "husky": "^9.1.7"
+  }
+}
