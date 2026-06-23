@@ -62,6 +62,34 @@ function verg() {
     return 0
   fi
 
+  local zensical_config
+  local zensical_cmd
+  zensical_config="zensical.toml"
+  zensical_cmd="zensical"
+
+  if [[ -f "$zensical_config" ]]; then
+    if [[ -x ".venv/bin/zensical" ]]; then
+      zensical_cmd=".venv/bin/zensical"
+    elif ! command -v zensical >/dev/null 2>&1; then
+      printf "zensical not found. Install it or create .venv/bin/zensical before running verg.\n" >&2
+      return 1
+    fi
+
+    if ! gum spin --spinner dot --title "Building zensical docs site..." --show-error -- "$zensical_cmd" build --clean; then
+      return 1
+    fi
+
+    if [[ -n "$(git status --porcelain -- site)" ]]; then
+      if ! git add -A -- site; then
+        return 1
+      fi
+
+      if ! git commit -m "build(site): build zensical docs site"; then
+        return 1
+      fi
+    fi
+  fi
+
   if npx commit-and-tag-version "${args[@]}"; then
     if gum spin --spinner dot --title "Pushing commits..." --show-error -- git push; then
       if gum spin --spinner dot --title "Pushing tags..." --show-error -- git push --tags; then
