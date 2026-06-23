@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.14](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.13...v0.0.14) (2026-06-23)
+
+
+### Features
+
+* **verg:** build zensical site before release ([8ee9816](https://github.com/iop098321qwe/commit-and-tag-version/commit/8ee98160c750cdc2b6d4def14c8ef0b69f52fcdd))
+
+
+### Bug Fixes
+
+* **npm:** rename wrapper package to avoid npx collision ([110d7c0](https://github.com/iop098321qwe/commit-and-tag-version/commit/110d7c0ffd1667a1e002450fb1e6127d93d85778))
+* **verg:** use repo venv for zensical build ([b26398a](https://github.com/iop098321qwe/commit-and-tag-version/commit/b26398abf74b8165a7d5e66cd90247b047f9e2eb))
+
 ## [0.0.13](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.12...v0.0.13) (2026-05-31)
 
 
