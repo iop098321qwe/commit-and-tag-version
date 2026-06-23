@@ -1,5 +1,5 @@
 {
-  "name": "commit-and-tag-version",
+  "name": "commit-and-tag-version-mod",
   "version": "0.0.13",
   "description": "Convenience wrappers for `commit-and-tag-version` release automation. Includes preview and guided release flow with an optional GitHub draft.",
   "main": "index.js",
