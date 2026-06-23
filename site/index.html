@@ -420,7 +420,10 @@ Includes preview and guided release flow with an optional GitHub draft.</p>
 <ul>
 <li><code>verg</code>: Preview next version, run release, push commits and tags, and draft
   a GitHub release. If run outside the repository root, <code>verg</code> prompts to
-  change directories; if run outside a git repo, it exits.</li>
+  change directories; if run outside a git repo, it exits. When
+  <code>zensical.toml</code> is present and you confirm the release flow, <code>verg</code> runs
+  <code>zensical build --clean</code> and commits updated <code>site/</code> output before the
+  release commit.</li>
 </ul>
 <h2 id="aliases">Aliases<a class="headerlink" href="#aliases" title="Permanent link">&para;</a></h2>
 <ul>
