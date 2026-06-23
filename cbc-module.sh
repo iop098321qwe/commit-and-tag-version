@@ -62,6 +62,25 @@ function verg() {
     return 0
   fi
 
+  local zensical_config
+  zensical_config="zensical.toml"
+
+  if [[ -f "$zensical_config" ]]; then
+    if ! gum spin --spinner dot --title "Building zensical docs site..." --show-error -- zensical build --clean; then
+      return 1
+    fi
+
+    if [[ -n "$(git status --porcelain -- site)" ]]; then
+      if ! git add -A -- site; then
+        return 1
+      fi
+
+      if ! git commit -m "build(site): build zensical docs site"; then
+        return 1
+      fi
+    fi
+  fi
+
   if npx commit-and-tag-version "${args[@]}"; then
     if gum spin --spinner dot --title "Pushing commits..." --show-error -- git push; then
       if gum spin --spinner dot --title "Pushing tags..." --show-error -- git push --tags; then
