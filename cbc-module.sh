@@ -98,6 +98,10 @@ function verg() {
 
         local changelog_file
         local notes_file
+        local release_url_file
+        local created_release_url
+        local release_edit_url
+        local line
         changelog_file="CHANGELOG.md"
 
         if [[ ! -f "$changelog_file" ]]; then
@@ -134,12 +138,40 @@ function verg() {
           return 0
         fi
 
-        if gum spin --spinner dot --title "Creating GitHub release draft..." -- \
-          gh release create "$latest_tag" --notes-file "$notes_file" -d; then
-          gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 4
-          gum spin --spinner dot --title "Opening GitHub release draft..." -- gh browse -r
+        if ! release_url_file=$(mktemp); then
+          rm -f "$notes_file"
+          return 1
         fi
 
+        if gum spin --spinner dot --title "Creating GitHub release draft..." -- \
+          bash -c 'gh release create "$1" --notes-file "$2" -d > "$3"' _ \
+            "$latest_tag" "$notes_file" "$release_url_file"; then
+          created_release_url=""
+          while IFS= read -r line; do
+            case "$line" in
+              https://*|http://*)
+                created_release_url="$line"
+                ;;
+            esac
+          done < "$release_url_file"
+
+          case "$created_release_url" in
+            */releases/tag/*)
+              release_edit_url=${created_release_url/\/releases\/tag\//\/releases\/edit\/}
+              gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 4
+              gum spin --spinner dot --title "Opening GitHub release draft..." -- xdg-open "$release_edit_url"
+              ;;
+            */releases/edit/*)
+              gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 4
+              gum spin --spinner dot --title "Opening GitHub release draft..." -- xdg-open "$created_release_url"
+              ;;
+            *)
+              printf "Could not determine created release draft URL; skipping browser open.\n" >&2
+              ;;
+          esac
+        fi
+
+        rm -f "$release_url_file"
         rm -f "$notes_file"
       fi
     fi
