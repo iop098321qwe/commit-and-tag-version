@@ -1,0 +1,1 @@
+x 2026-06-24 2026-06-24 ensure that `verg` opens latest release page directly @feature due:2026-06-25
