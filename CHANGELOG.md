@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.15](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.14...v0.0.15) (2026-06-25)
+
+
+### Bug Fixes
+
+* **verg:** open created release draft in edit mode ([60c6929](https://github.com/iop098321qwe/commit-and-tag-version/commit/60c6929cc3c581806cc251235a0ebde49aba526a))
+
 ## [0.0.14](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.13...v0.0.14) (2026-06-23)
 
 
