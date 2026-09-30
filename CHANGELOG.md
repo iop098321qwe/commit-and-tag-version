@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.17](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.16...v0.0.17) (2026-09-30)
+
+### Features
+
+* **verg:** prompt before releasing outside main ([c426b39](https://github.com/iop098321qwe/commit-and-tag-version/commit/c426b396244886794974acc94d07d6d9349996be))
+
 ## [0.0.16](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.15...v0.0.16) (2026-09-30)
 
 ### Bug Fixes
