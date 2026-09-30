@@ -27,6 +27,24 @@ function verg() {
     fi
   fi
 
+  local branch branch_choice
+  branch=$(git branch --show-current) || return 1
+  branch=${branch:-detached HEAD}
+  if [[ "$branch" != "main" ]]; then
+    printf "verg is running outside the main branch: %s\n" "$branch" >&2
+    branch_choice=$(gum choose "Switch to main" "Run anyway on $branch" "Cancel") || return 1
+    case "$branch_choice" in
+      "Switch to main")
+        if ! git switch main; then
+          printf "Failed to switch to main; stopping verg.\n" >&2
+          return 1
+        fi
+        ;;
+      "Run anyway on $branch") ;;
+      *) return 1 ;;
+    esac
+  fi
+
   gum style \
     --border rounded \
     --border-foreground "#b4befe" \

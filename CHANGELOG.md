@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.16](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.15...v0.0.16) (2026-09-30)
+
+### Bug Fixes
+
+* **verg:** push only the current release tag and report failures ([dc353bf](https://github.com/iop098321qwe/commit-and-tag-version/commit/dc353bf14b6ee4ca17f9b1c6a053abab20431a7b))
+
 ## [0.0.15](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.14...v0.0.15) (2026-06-25)
 
 
