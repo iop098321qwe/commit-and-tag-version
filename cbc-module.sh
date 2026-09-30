@@ -90,11 +90,31 @@ function verg() {
     fi
   fi
 
+  local tags_before release_tags latest_tag tag
+  tags_before=$(git tag --list) || return 1
+
   if npx commit-and-tag-version "${args[@]}"; then
+    release_tags=$(git tag --points-at HEAD) || return 1
+    latest_tag=""
+    # Only select a tag created by this invocation on the release commit.
+    while IFS= read -r tag; do
+      [[ -n "$tag" ]] || continue
+      if [[ $'\n'"$tags_before"$'\n' != *$'\n'"$tag"$'\n'* ]]; then
+        if [[ -n "$latest_tag" ]]; then
+          printf "Multiple new release tags found; refusing to push tags.\n" >&2
+          return 1
+        fi
+        latest_tag="$tag"
+      fi
+    done <<< "$release_tags"
+    if [[ -z "$latest_tag" ]]; then
+      printf "No new release tag found on HEAD; refusing to push tags.\n" >&2
+      return 1
+    fi
+
     if gum spin --spinner dot --title "Pushing commits..." --show-error -- git push; then
-      if gum spin --spinner dot --title "Pushing tags..." --show-error -- git push --tags; then
-        local latest_tag
-        latest_tag=$(git describe --tags --abbrev=0)
+      if gum spin --spinner dot --title "Pushing tags..." --show-error -- \
+        git -c push.followTags=false push origin "refs/tags/$latest_tag:refs/tags/$latest_tag"; then
 
         local changelog_file
         local notes_file
@@ -102,6 +122,7 @@ function verg() {
         local created_release_url
         local release_edit_url
         local line
+        local release_status=0
         changelog_file="CHANGELOG.md"
 
         if [[ ! -f "$changelog_file" ]]; then
@@ -109,7 +130,7 @@ function verg() {
           return 0
         fi
 
-        notes_file=$(mktemp)
+        notes_file=$(mktemp) || return 1
         if ! awk '
           BEGIN { found_release=0 }
           /^## / {
@@ -143,7 +164,7 @@ function verg() {
           return 1
         fi
 
-        if gum spin --spinner dot --title "Creating GitHub release draft..." -- \
+        if gum spin --spinner dot --title "Creating GitHub release draft..." --show-error -- \
           bash -c 'gh release create "$1" --notes-file "$2" -d > "$3"' _ \
             "$latest_tag" "$notes_file" "$release_url_file"; then
           created_release_url=""
@@ -158,22 +179,39 @@ function verg() {
           case "$created_release_url" in
             */releases/tag/*)
               release_edit_url=${created_release_url/\/releases\/tag\//\/releases\/edit\/}
-              gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 4
-              gum spin --spinner dot --title "Opening GitHub release draft..." -- xdg-open "$release_edit_url"
+              if gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 4; then
+                gum spin --spinner dot --title "Opening GitHub release draft..." --show-error -- xdg-open "$release_edit_url" || release_status=$?
+              else
+                release_status=$?
+              fi
               ;;
             */releases/edit/*)
-              gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 4
-              gum spin --spinner dot --title "Opening GitHub release draft..." -- xdg-open "$created_release_url"
+              if gum spin --spinner dot --title "Waiting for GitHub release draft..." -- sleep 4; then
+                gum spin --spinner dot --title "Opening GitHub release draft..." --show-error -- xdg-open "$created_release_url" || release_status=$?
+              else
+                release_status=$?
+              fi
               ;;
             *)
               printf "Could not determine created release draft URL; skipping browser open.\n" >&2
+              release_status=1
               ;;
           esac
+        else
+          release_status=$?
         fi
 
-        rm -f "$release_url_file"
-        rm -f "$notes_file"
+        rm -f "$release_url_file" "$notes_file" || {
+          [[ "$release_status" -ne 0 ]] || release_status=1
+        }
+        return "$release_status"
+      else
+        return 1
       fi
+    else
+      return 1
     fi
+  else
+    return 1
   fi
 }
