@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.18](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.17...v0.0.18) (2026-10-01)
+
+### Features
+
+* **verg:** present releases with a polished Gum interface ([db541c2](https://github.com/iop098321qwe/commit-and-tag-version/commit/db541c2545eb48116d327af254c90e358dea0055))
+
 ## [0.0.17](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.16...v0.0.17) (2026-09-30)
 
 ### Features
