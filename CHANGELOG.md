@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.19](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.18...v0.0.19) (2026-10-15)
+
+### Bug Fixes
+
+* **verg:** expose npm installation prompts during releases ([28a26ef](https://github.com/iop098321qwe/commit-and-tag-version/commit/28a26efe67957883cc151614750083036b77e896))
+
 ## [0.0.18](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.17...v0.0.18) (2026-10-01)
 
 ### Features
