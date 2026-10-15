@@ -49,11 +49,10 @@ function _verg_preview() (
   preview_file=$(mktemp) || return 1
   trap 'rm -f "$preview_file"' EXIT
 
-  if ! gum spin --spinner dot --spinner.foreground '#b4befe' \
-    --title.foreground '#b4befe' --padding '0 2' \
-    --title 'Preparing release preview...' --show-error -- \
-    bash -c 'output=$1; shift; exec "$@" > "$output" 2>&1' _ "$preview_file" \
-      npx commit-and-tag-version "$@" --dry-run --skip.commit --skip.tag; then
+  # Capture the preview once; keep npm prompts on stderr and stdin available.
+  _verg_message '#cdd6f4' 'Preparing release preview...' || return 1
+  if ! npx commit-and-tag-version "$@" --dry-run --skip.commit --skip.tag \
+    > "$preview_file"; then
     gum style --foreground '#f38ba8' --padding '0 2' < "$preview_file" >&2
     _verg_message '#f38ba8' 'Error: Preview failed. Release creation was not attempted.' >&2
     return 1
@@ -204,9 +203,14 @@ function verg() {
 
   local tags_before release_tags latest_tag tag
   tags_before=$(git tag --list) || return 1
-  _verg_run 'Creating release...' 'Release command completed.' \
-    'Release command failed. Pushes were not attempted; inspect local changes before retrying.' \
-    npx commit-and-tag-version "${args[@]}" || return 1
+  _verg_message '#cdd6f4' 'Creating release...' || return 1
+  if npx commit-and-tag-version "${args[@]}"; then
+    _verg_message '#a6e3a1' 'Release command completed.' || true
+  else
+    _verg_message '#f38ba8' \
+      'Error: Release command failed. Pushes were not attempted; inspect local changes before retrying.' >&2
+    return 1
+  fi
   release_tags=$(git tag --points-at HEAD) || return 1
   latest_tag=''
   # Only select a tag created by this invocation on the release commit.
