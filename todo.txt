@@ -1,1 +1,2 @@
 (A) 2026-10-15 fix exposing npx commit-and-tag-version installation popup @fix
+(A) 2026-11-04 fix `verg` opening the release page in a new window instead of using open window @fix
