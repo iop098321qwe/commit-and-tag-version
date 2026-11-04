@@ -18,6 +18,80 @@ function _verg_message() {
   gum style --foreground "$color" --padding '0 2' -- "$@"
 }
 
+# Select a dedicated browser, never a web-app desktop entry or a shell command
+# from $BROWSER. Native URL handling keeps the launch in the normal profile.
+function _verg_open_draft() {
+  local url="$1" desktop browser browser_class clients address
+  local -a candidates browser_args
+  if command -v omarchy-cmd-default-browser >/dev/null 2>&1; then
+    desktop=$(omarchy-cmd-default-browser) || return 1
+  else
+    desktop=$(xdg-settings get default-web-browser) || return 1
+  fi
+  case "$desktop" in
+    brave-origin.desktop) candidates=(brave-origin); browser_class=brave-origin ;;
+    brave-browser.desktop|brave.desktop)
+      candidates=(brave brave-browser); browser_class=brave-browser ;;
+    chromium.desktop|chromium-browser.desktop)
+      candidates=(chromium chromium-browser); browser_class=chromium ;;
+    google-chrome.desktop)
+      candidates=(google-chrome-stable google-chrome); browser_class=google-chrome ;;
+    microsoft-edge.desktop)
+      candidates=(microsoft-edge-stable microsoft-edge); browser_class=microsoft-edge ;;
+    firefox.desktop|org.mozilla.firefox.desktop)
+      candidates=(firefox); browser_class=firefox ;;
+    *)
+      _verg_message '#f38ba8' "Error: Unsupported default browser: $desktop. Open the draft URL manually." >&2
+      return 1
+      ;;
+  esac
+  for browser in "${candidates[@]}"; do
+    command -v "$browser" >/dev/null 2>&1 && break
+  done
+  if ! command -v "$browser" >/dev/null 2>&1; then
+    _verg_message '#f38ba8' 'Error: The default browser executable was not found.' >&2
+    return 1
+  fi
+
+  # Chromium can create a window when the last active normal-profile window
+  # is an app, even if a tabbed window exists. Focus an exact browser class
+  # first; prefix matches also select installed web apps. Do not focus private
+  # windows. Native non-private URL handling is the final privacy boundary,
+  # since compositor titles alone cannot establish a window's privacy mode.
+  if [[ -z ${HYPRLAND_INSTANCE_SIGNATURE:-} ]] ||
+    ! command -v hyprctl >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
+    _verg_message '#f38ba8' 'Error: Safe browser-window selection requires Hyprland, hyprctl, and jq. Open the draft URL manually.' >&2
+    return 1
+  fi
+  if ! clients=$(hyprctl clients -j); then
+    _verg_message '#f38ba8' 'Error: Could not inspect browser windows. Open the draft URL manually.' >&2
+    return 1
+  fi
+  address=$(jq -er --arg class "$browser_class" '
+    if type != "array" then error("Invalid browser window inventory") else
+      [.[] | select(.mapped == true)
+        | select((.class | ascii_downcase) == $class)
+        | select(((.initialTitle // "") + " " + (.title // "")
+          | test("private|incognito|inprivate|guest"; "i")) | not)]
+      | sort_by(.focusHistoryID // 2147483647)
+      | first | .address // ""
+    end' <<< "$clients") || return 1
+  if [[ -n "$address" ]]; then
+    [[ $address =~ ^0x[[:xdigit:]]+$ ]] || return 1
+    if ! hyprctl dispatch "hl.dsp.focus({ window = \"address:$address\" })" >/dev/null 2>&1 &&
+      ! hyprctl dispatch focuswindow "address:$address" >/dev/null; then
+      _verg_message '#f38ba8' 'Error: Could not focus the browser window. Open the draft URL manually.' >&2
+      return 1
+    fi
+    browser_args=(--new-tab)
+  else
+    browser_args=(--new-window)
+  fi
+  _verg_run 'Opening GitHub draft...' 'Draft opened in browser.' \
+    'Could not open the browser. The draft already exists; use the URL below.' \
+    "$browser" "${browser_args[@]}" "$url"
+}
+
 function _verg_run() (
   local title="$1" completed="$2" failure="$3"
   shift 3
@@ -294,9 +368,7 @@ function verg() {
     if [[ -n "$release_edit_url" ]]; then
       if _verg_run 'Waiting to open draft...' 'Draft ready to open.' \
         'Could not wait to open the draft. The draft already exists.' sleep 4; then
-        _verg_run 'Opening GitHub draft...' 'Draft opened in browser.' \
-          'Could not open the browser. The draft already exists; use the URL below.' \
-          xdg-open "$release_edit_url" || release_status=$?
+        _verg_open_draft "$release_edit_url" || release_status=$?
       else
         release_status=$?
       fi
