@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.20](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.19...v0.0.20) (2026-11-04)
+
+### Bug Fixes
+
+* **verg:** reuse normal browser windows for release drafts ([796e572](https://github.com/iop098321qwe/commit-and-tag-version/commit/796e5721f5997b2a3eb87152475ba5e29e6bbef0))
+
 ## [0.0.19](https://github.com/iop098321qwe/commit-and-tag-version/compare/v0.0.18...v0.0.19) (2026-10-15)
 
 ### Bug Fixes
