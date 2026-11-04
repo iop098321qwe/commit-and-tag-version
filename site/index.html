@@ -281,6 +281,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opening-release-drafts" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Opening release drafts
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -377,6 +394,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opening-release-drafts" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Opening release drafts
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -425,6 +459,18 @@ Includes preview and guided release flow with an optional GitHub draft.</p>
   <code>zensical build --clean</code> and commits updated <code>site/</code> output before the
   release commit.</li>
 </ul>
+<h3 id="opening-release-drafts">Opening release drafts<a class="headerlink" href="#opening-release-drafts" title="Permanent link">&para;</a></h3>
+<p>On Hyprland, <code>verg</code> uses <code>hyprctl</code> and <code>jq</code> to select the most recently used
+dedicated window of the default browser, then opens the draft in a new tab.
+Web-app window classes and private/incognito/guest window title markers are
+excluded from focus selection. The browser's native normal-profile URL handling
+keeps the draft out of private sessions. If no eligible window is found, <code>verg</code>
+requests a new normal browser window.</p>
+<p>Supported defaults are Brave (including Brave Origin), Chromium, Google Chrome,
+Microsoft Edge, and Firefox. Omarchy's browser preference is used when available;
+otherwise, <code>verg</code> reads <code>xdg-settings</code>. If the browser is unsupported or window
+selection fails, <code>verg</code> reports the failure and prints the created draft URL for
+manual opening.</p>
 <h2 id="aliases">Aliases<a class="headerlink" href="#aliases" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>ver</code>: Run <code>npx commit-and-tag-version</code>.</li>
