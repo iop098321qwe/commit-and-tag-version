@@ -1,1 +1,2 @@
 x 2026-06-24 2026-06-24 ensure that `verg` opens latest release page directly @feature due:2026-06-25
+x 2026-11-04 2026-11-04 fix `verg` opening the release page in a new window instead of using open window @fix
