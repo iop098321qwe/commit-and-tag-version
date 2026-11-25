@@ -123,11 +123,15 @@ function _verg_preview() (
   preview_file=$(mktemp) || return 1
   trap 'rm -f "$preview_file"' EXIT
 
-  # Capture the preview once; keep npm prompts on stderr and stdin available.
+  # Leave npm's stdout and stdin alone for install prompts. Redirect only
+  # the release tool, after npm has resolved the package and launched Bash.
   _verg_message '#cdd6f4' 'Preparing release preview...' || return 1
-  if ! npx commit-and-tag-version "$@" --dry-run --skip.commit --skip.tag \
-    > "$preview_file"; then
-    gum style --foreground '#f38ba8' --padding '0 2' < "$preview_file" >&2
+  if ! npx --package=commit-and-tag-version -- bash -c \
+    'output=$1; shift; exec commit-and-tag-version "$@" > "$output"' \
+    _ "$preview_file" "$@" --dry-run --skip.commit --skip.tag; then
+    if [[ -s "$preview_file" ]]; then
+      gum style --foreground '#f38ba8' --padding '0 2' < "$preview_file" >&2
+    fi
     _verg_message '#f38ba8' 'Error: Preview failed. Release creation was not attempted.' >&2
     return 1
   fi
@@ -278,7 +282,7 @@ function verg() {
   local tags_before release_tags latest_tag tag
   tags_before=$(git tag --list) || return 1
   _verg_message '#cdd6f4' 'Creating release...' || return 1
-  if npx commit-and-tag-version "${args[@]}"; then
+  if npx --package=commit-and-tag-version -- commit-and-tag-version "${args[@]}"; then
     _verg_message '#a6e3a1' 'Release command completed.' || true
   else
     _verg_message '#f38ba8' \
